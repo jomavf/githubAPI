@@ -1,7 +1,6 @@
 import "./App.css";
 import History from "./pages/History/History";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,21 +11,26 @@ import { TopBar } from "./layout/topBar";
 import { Login } from "./pages/Login/Login";
 
 function App() {
+  const userId = useSelector((store) => {
+    console.log(store);
+    return store.user.id;
+  });
+
   return (
-    <Provider store={store}>
-      <Router>
-        <TopBar></TopBar>
-        <Redirect to="/login" />
-        <Switch>
-          <Route path="/login">
-            <Login></Login>
-          </Route>
-          <Route path="/history">
-            <History></History>
-          </Route>
-        </Switch>
-      </Router>
-    </Provider>
+    <Router>
+      <TopBar></TopBar>
+      <Switch>
+        <Route exact path="/">
+          {userId ? <Redirect to="/history" /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/login">
+          <Login></Login>
+        </Route>
+        <Route path="/history">
+          <History></History>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

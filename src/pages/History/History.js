@@ -10,12 +10,14 @@ export const History = () => {
 
   const [commits, setCommits] = useState([]);
 
+
   const handleGetProjectDetails = async () => {
     const commitsObj = await requestCommits(username, project);
     const commitsData = extractCommitData(commitsObj);
     const commitsByDay = groupCommitsByDay(commitsData);
     setCommits(commitsByDay);
   };
+
   return (
     <div className="container">
       <Controls
